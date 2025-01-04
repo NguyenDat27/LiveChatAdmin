@@ -5,9 +5,9 @@ import {
   Toast,
 } from "@shopify/polaris"
 import { useCallback } from "react"
-import {logo} from "./adminComponents/Logo.jsx";
-import Navigator from "./adminComponents/Navigator.jsx";
-import TopBarComponent from "./adminComponents/Search.jsx";
+import {logo} from "./Logo.jsx";
+import Navigator from "./Navigator.jsx";
+import TopBarComponent from "./Search.jsx";
 import { useAdminGlobalStore } from "@/stores/admin.js";
 import { Outlet } from "react-router-dom";
 
