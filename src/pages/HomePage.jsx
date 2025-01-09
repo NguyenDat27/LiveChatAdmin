@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { useState } from "react";
 import {
   TextField,
   Text,
@@ -9,10 +9,34 @@ import MainChat from "@/components/MainChat";
 import SecondarySideBar from "@/components/SecondarySideBar";
 
 export default function ContainerHP() {
+
+  const [isMainChatVisible, setIsMainChatVisible] = useState(false);
+  const [isSidebar2Visible, setIsSidebar2Visible] = useState(false);
+
+  const handleChatItemClick = () => {
+    setIsMainChatVisible(true);
+    console.log("click", isMainChatVisible);
+  };
+
+  const handleMainChatClick = () => {
+    setIsSidebar2Visible(true);
+    console.log("click", isSidebar2Visible);
+  }
+
+  const handleSidebar2ClickBack = () => {
+    setIsMainChatVisible(true);
+    setIsSidebar2Visible(false);
+  }
+
+  const handleMainChatClickBack = () => {
+    setIsMainChatVisible(false);
+  }
+
+
   return (
     <>
-      <WrapperHomePage>
-        <div className="flex flex-col w-[25%] px-3">
+      <WrapperHomePage $isVisibleMain={isMainChatVisible} $isVisibleSidebar={isSidebar2Visible}>
+        <div className="sidebar1 flex flex-col w-[25%] px-3">
           <div className="flex items-center gap-2">
             <Text variant="headingXl" as="h4">
               Messages
@@ -24,14 +48,14 @@ export default function ContainerHP() {
           <div className="mt-2 mb-3">
             <TextField placeholder="Tìm kiếm" label="" type="text" />
           </div>
-          <ItemsChat />
+          <ItemsChat onChatItemClick={handleChatItemClick}/>
         </div>
         <div className="w-[1px] h-[calc(100vh-56px)] bg-[#E1E1E1]"></div>
 
-        <MainChat />
+        <MainChat onMainChatClick={handleMainChatClick} onMainChatClickBack={handleMainChatClickBack}/>
         
         <div className="w-[1px] h-[calc(100vh-56px)] bg-[#E1E1E1]"></div>
-        <SecondarySideBar />
+        <SecondarySideBar onSidebar2Click={handleSidebar2ClickBack}/>
       </WrapperHomePage>
     </>
   );
@@ -40,6 +64,26 @@ const WrapperHomePage = styled.section`
   display: flex;
   justify-content: space-between;
   width: 100%;
+
+  @media (max-width: 1000px) {
+    .main-chat {
+      display: ${({ $isVisibleMain, $isVisibleSidebar }) => ($isVisibleMain && !$isVisibleSidebar ? '' : 'none')};
+    }
+    .sidebar2 {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      padding: 10px 20px;
+      display: ${({ $isVisibleSidebar }) => ($isVisibleSidebar ? '' : 'none')};
+    }
+    .sidebar1 {
+      position: absolute;
+      padding: 10px 20px;
+      width: 100%;
+      height: 100%;
+      display: ${({ $isVisibleMain }) => ($isVisibleMain ? 'none' : '')};
+    }
+  }
 `;
 
 

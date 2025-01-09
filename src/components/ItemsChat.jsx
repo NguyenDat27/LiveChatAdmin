@@ -1,33 +1,43 @@
 import { Text } from "@shopify/polaris";
 import styled from "styled-components";
+import profiles from "@/data/profile";
+import { truncated } from "@/utils/text";
+export default function ItemsChat({ onChatItemClick }) {
 
-export default function ItemsChat() {
   return (
-    <ItemsChatStyle>
-      <div className="avatar_chat">
-        <img
-          src="https://plus.unsplash.com/premium_photo-1664457233849-b79bf17537f5?q=80&w=1175&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt=""
-        />
-        <div className="chat_activity chat_activity_active"></div>
-      </div>
-      <div className="flex flex-col gap-1">
-        <Text variant="headingXs" as="h4">
-          Pickleball
-        </Text>
-        <Text variant="bodySm" as="p">
-          Pickleball is a racket or paddle sport in which two players
-        </Text>
-      </div>
-      <div className="flex flex-col gap-1 items-end justify-between">
-        <Text variant="bodySm" as="span">
-          08:16
-        </Text>
-        <div className="flex items-center justify-center w-[18px] h-[18px] rounded-full flex-shrink-0 bg-[#D76E00] text-white text-xs">
-          2
+    <div className="flex flex-col item-chat">
+    {Object.entries(profiles).map(([key, profile]) => (
+    <div key={key} className="profile-item" onClick={onChatItemClick}>
+      <ItemsChatStyle>
+        <div className="flex flex-grow gap-2">
+          <div className="avatar_chat">
+            <img
+              src={profile.srcImage}
+              alt=""
+            />
+            <div className="chat_activity chat_activity_active"></div>
+          </div>
+          <div className="flex flex-col gap-1">
+            <Text variant="headingXs" as="h4">
+              {profile.name}
+            </Text>
+            <Text variant="bodySm" as="p">
+              {truncated(profile.response, 40)}
+            </Text>
+          </div>
         </div>
+        <div className="flex flex-col gap-1 items-end justify-between">
+          <Text variant="bodySm" as="span">
+            {profile.time}
+          </Text>
+          <div className="flex items-center justify-center w-[18px] h-[18px] rounded-full flex-shrink-0 bg-[#D76E00] text-white text-xs">
+            {profile.number}
+          </div>
+        </div>
+      </ItemsChatStyle>
       </div>
-    </ItemsChatStyle>
+    ))}  
+    </div>
   );
 }
 
@@ -39,7 +49,7 @@ const ItemsChatStyle = styled.section`
   padding: 10px 12px;
   border: 1px solid transparent;
   border-radius: 10px;
-  margin: 10px 0;
+  margin: 5px 0;
   position: relative;
   transition: all 150ms ease;
   background: rgba(224, 224, 224, 0.5);
