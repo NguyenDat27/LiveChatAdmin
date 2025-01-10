@@ -7,7 +7,7 @@ export default function ItemsChat({ onChatItemClick }) {
   return (
     <div className="flex flex-col item-chat">
     {Object.entries(profiles).map(([key, profile]) => (
-    <div key={key} className="profile-item" onClick={onChatItemClick}>
+    <div key={key} className="profile-item" onClick={() => onChatItemClick(profile)}>
       <ItemsChatStyle>
         <div className="flex flex-grow gap-2">
           <div className="avatar_chat">

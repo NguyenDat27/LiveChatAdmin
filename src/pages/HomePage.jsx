@@ -7,20 +7,21 @@ import {
 import ItemsChat from "@/components/ItemsChat";
 import MainChat from "@/components/MainChat";
 import SecondarySideBar from "@/components/SecondarySideBar";
+import { useUser } from "@/stores/user";
 
 export default function ContainerHP() {
 
   const [isMainChatVisible, setIsMainChatVisible] = useState(false);
   const [isSidebar2Visible, setIsSidebar2Visible] = useState(false);
+  const [_, setUserSelected] = useUser.userSelected();
 
-  const handleChatItemClick = () => {
+  const handleChatItemClick = (profile) => {
     setIsMainChatVisible(true);
-    console.log("click", isMainChatVisible);
+    setUserSelected(profile);
   };
 
   const handleMainChatClick = () => {
     setIsSidebar2Visible(true);
-    console.log("click", isSidebar2Visible);
   }
 
   const handleSidebar2ClickBack = () => {
@@ -37,18 +38,20 @@ export default function ContainerHP() {
     <>
       <WrapperHomePage $isVisibleMain={isMainChatVisible} $isVisibleSidebar={isSidebar2Visible}>
         <div className="sidebar1 flex flex-col w-[25%] px-3">
-          <div className="flex items-center gap-2">
-            <Text variant="headingXl" as="h4">
-              Messages
-            </Text>
-            <div className="flex items-center justify-center w-[18px] h-[18px] rounded-full flex-shrink-0 bg-[#D76E00] text-white text-xs">
-              1
+            <div className="flex items-center gap-2">
+              <Text variant="headingXl" as="h4">
+                Messages
+              </Text>
+              <div className="flex items-center justify-center w-[18px] h-[18px] rounded-full flex-shrink-0 bg-[#D76E00] text-white text-xs">
+                1
+              </div>
             </div>
-          </div>
-          <div className="mt-2 mb-3">
-            <TextField placeholder="Tìm kiếm" label="" type="text" />
-          </div>
-          <ItemsChat onChatItemClick={handleChatItemClick}/>
+            <div className="mt-2 mb-3">
+              <TextField placeholder="Tìm kiếm" label="" type="text" />
+            </div>
+            <div className="item-chat">
+              <ItemsChat onChatItemClick={handleChatItemClick}/>
+            </div>
         </div>
         <div className="w-[1px] h-[calc(100vh-56px)] bg-[#E1E1E1]"></div>
 
@@ -64,7 +67,10 @@ const WrapperHomePage = styled.section`
   display: flex;
   justify-content: space-between;
   width: 100%;
-
+  .item-chat {
+    height: calc(100vh - 150px);
+    overflow-y: auto;
+  }
   @media (max-width: 1000px) {
     .main-chat {
       display: ${({ $isVisibleMain, $isVisibleSidebar }) => ($isVisibleMain && !$isVisibleSidebar ? '' : 'none')};
@@ -82,6 +88,9 @@ const WrapperHomePage = styled.section`
       width: 100%;
       height: 100%;
       display: ${({ $isVisibleMain }) => ($isVisibleMain ? 'none' : '')};
+      .item-chat {
+        height: 100%;
+      }
     }
   }
 `;

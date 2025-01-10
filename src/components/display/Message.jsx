@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import { Text, Icon, Popover, ActionList, Tooltip } from '@shopify/polaris'
 import { MenuVerticalIcon, ReplayIcon } from '@shopify/polaris-icons'
 
-import messages from '@/data/messagesPickleball'
+import profile from '@/data/profile'
 import RecallMessage from '@/components/display/RecallMessage'
+import { useUser } from '@/stores/user'
 
 const Message = ({ onReply, onEdit }) => {
 
     const [activePopover, setActivePopover] = useState(null);
+    const [userSelected] = useUser.userSelected();
 
     const [deleteIndex, setDeleteIndex] = useState([]);
 
@@ -26,16 +28,18 @@ const Message = ({ onReply, onEdit }) => {
         });
     };
 
+    const messages = userSelected.message ? userSelected.message : profile.pickleball.message;
+
     return (
         <>
-        {messages.map((message, index) => (
+        {messages?.map((message, index) => (
         <div key={index}>
             {message.role === "user" && (
             <div className="flex items-center gap-1">
                 <div className="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden">
                     <img
                         className="w-full h-full"
-                        src="https://plus.unsplash.com/premium_photo-1664457233849-b79bf17537f5?q=80&w=1175&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        src={userSelected.srcImage ? userSelected.srcImage : profile.pickleball.srcImage}
                         alt=""
                     />
                 </div>

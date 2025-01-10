@@ -5,8 +5,12 @@ import {
     ArrowLeftIcon
   } from "@shopify/polaris-icons";
 import styled from 'styled-components';
+import { useUser } from '@/stores/user';
+import profile from '@/data/profile';
 
 export default function SecondarySideBar({ onSidebar2Click }) {
+
+  const [userSelected] = useUser.userSelected();
   return (
     <ProfileItem className="sidebar2">
       <div className="back-icon-profile absolute top-0 left-0 p-3" onClick={onSidebar2Click}>
@@ -15,12 +19,12 @@ export default function SecondarySideBar({ onSidebar2Click }) {
       <div className="ProfileItem_head">
         <div className="ProfileItem_avatar">
           <img
-            src="https://plus.unsplash.com/premium_photo-1664457233849-b79bf17537f5?q=80&w=1175&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src={userSelected.srcImage ? userSelected.srcImage : profile.pickleball.srcImage}
             alt=""
           />
         </div>
         <Text variant="heading2xl" as="h3">
-          Pickleball
+          {userSelected.name ? userSelected.name : profile.pickleball.name}
         </Text>
         <div className="flex items-center gap-6">
           <div className="flex flex-col gap-1">

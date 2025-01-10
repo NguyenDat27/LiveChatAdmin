@@ -7,7 +7,7 @@ import {
 import { useCallback, useState } from 'react';
 import { logo } from './Logo.jsx';
 import Navigator from './Navigator.jsx';
-import TopBarComponent from './Search.jsx';
+import TopBarComponent from './Topbar.jsx';
 import { useAdminGlobalStore } from '@/stores/admin.js';
 import { Outlet } from 'react-router-dom';
 
@@ -37,7 +37,6 @@ export default function Layout() {
       logo={logo}
       topBar={
         <TopBarComponent
-          showNavigationToggle
           onNavigationToggle={toggleMobileNavigationActive}
         />
       }
@@ -45,17 +44,6 @@ export default function Layout() {
       showMobileNavigation={mobileNavigationActive}
       onNavigationDismiss={toggleMobileNavigationActive}
     >
-      {adminGlobalStore.isEdit ? (
-        <ContextualSaveBar
-          message="Unsaved changes"
-          saveAction={{
-            onAction: handleSave,
-          }}
-          discardAction={{
-            onAction: handleDiscard,
-          }}
-        />
-      ) : null}
       {adminGlobalStore.isLoading ? <Loading /> : null}
       {adminGlobalStore.toast.isShow ? (
         <Toast onDismiss={toggleToastActive} content={adminGlobalStore.toast.content} />

@@ -1,15 +1,12 @@
 import { useAdminGlobalStore } from '@/stores/admin';
 import { ActionList, TopBar } from '@shopify/polaris';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function TopBarComponent({ showNavigationToggle, onNavigationToggle }) {
+function TopBarComponent({ onNavigationToggle }) {
   const [adminGlobalStore] = useAdminGlobalStore();
-  const localSearchStore = '';
-
-  const userMenuActions = [
-    {
-      items: [{ content: 'Community forums' }],
-    },
-  ];
+  const [activeMenu, setActiveMenu] = useState(false);
+  const navigate = useNavigate();
 
   const searchResultsMarkup = (
     <ActionList
@@ -20,24 +17,38 @@ function TopBarComponent({ showNavigationToggle, onNavigationToggle }) {
     />
   );
 
+  const handleLogout = () => {
+    navigate('/login');
+  }
+
+  const handleActiveMenu = () => {
+    setActiveMenu(prev => !prev);
+  }
+
+  const userMenuActions = [
+    {
+      items: [
+        { content: 'Tài khoản của bạn' },
+        { content: 'Đăng xuất', onAction: () => handleLogout() }
+      ],
+    },
+  ];
+
   const userMenuMarkup = (
     <TopBar.UserMenu
       actions={userMenuActions}
       name={adminGlobalStore.user.name}
       detail={adminGlobalStore.user.detail}
       initials={Array.from(adminGlobalStore.user.name)[0]}
-      open={adminGlobalStore.isShowMenuMobile}
-      onToggle={() => (adminGlobalStore.isShowMenuMobile = !adminGlobalStore.isShowMenuMobile)}
+      open={activeMenu}
+      onToggle={() => handleActiveMenu()}
     />
   );
 
   return (
     <TopBar
-      showNavigationToggle={showNavigationToggle}
+      showNavigationToggle
       userMenu={userMenuMarkup}
-      searchResultsVisible={localSearchStore.search.length > 0}
-      searchResults={searchResultsMarkup}
-      onSearchResultsDismiss={() => (localSearchStore.search = '')}
       onNavigationToggle={onNavigationToggle}
     />
   );

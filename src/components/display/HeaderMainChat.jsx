@@ -1,21 +1,26 @@
 import React from 'react'
 import { Text, Icon } from '@shopify/polaris'
 import { PinIcon } from '@shopify/polaris-icons'
+import { useUser } from '@/stores/user'
+import profile from '@/data/profile'
 
 const HeaderMainChat = () => {
+
+    const [userSelected] = useUser.userSelected();
+
     return (
        <>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 cursor-pointer">
                 <div className="w-12 h-12 rounded-full overflow-hidden">
                     <img
-                    src="https://plus.unsplash.com/premium_photo-1664457233849-b79bf17537f5?q=80&w=1175&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    src={userSelected.srcImage ? userSelected.srcImage : profile.pickleball.srcImage}
                     alt=""
                     className="w-ful h-full"
                     />
                 </div>
                 <div className="flex flex-col gap-1">
                     <Text variant="headingXs" as="h6">
-                        Pickleball
+                        {userSelected.name ? userSelected.name : profile.pickleball.name}
                     </Text>
                     <div className="flex items-center gap-[2px]">
                     <div className="w-2 h-2 rounded-full bg-[#23A330]"></div>
